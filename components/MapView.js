@@ -301,6 +301,12 @@ const propTypes = {
   legalLabelInsets: EdgeInsetsPropType,
 
   /**
+  * Callback that is called once the map is fully loaded.
+  */
+  onMapReady: PropTypes.func,
+
+
+  /**
    * Callback that is called continuously when the user is dragging the map.
    */
   onRegionChange: PropTypes.func,
@@ -412,15 +418,17 @@ class MapView extends React.Component {
     this.map.setNativeProps({ customMapStyleString: JSON.stringify(customMapStyle) });
   }
 
-  _onMapReady() {
-    const { region, initialRegion } = this.props;
+  _onMapReady(event) {
+    const { region, initialRegion, onMapReady } = this.props;
     if (region) {
       this.map.setNativeProps({ region });
     } else if (initialRegion) {
       this.map.setNativeProps({ region: initialRegion });
     }
     this._updateStyle();
-    this.setState({ isReady: true });
+    this.setState({ isReady: true }, () => {
+      onMapReady();
+    });
   }
 
   _onLayout(e) {

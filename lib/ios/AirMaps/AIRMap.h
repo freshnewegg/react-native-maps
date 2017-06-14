@@ -45,6 +45,7 @@ extern const CGFloat AIRMapZoomBoundBuffer;
 @property (nonatomic, assign) BOOL ignoreRegionChanges;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onChange;
+@property (nonatomic, copy) RCTBubblingEventBlock onMapReady;
 @property (nonatomic, copy) RCTBubblingEventBlock onPress;
 @property (nonatomic, copy) RCTBubblingEventBlock onPanDrag;
 @property (nonatomic, copy) RCTBubblingEventBlock onLongPress;

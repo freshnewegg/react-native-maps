@@ -30,6 +30,7 @@
 
 static NSString *const RCTMapViewKey = @"MapView";
 
+static AIRMapUrlTile* airMapUrlTile;
 
 @interface AIRMapManager() <MKMapViewDelegate>
 
@@ -112,6 +113,39 @@ RCT_CUSTOM_VIEW_PROPERTY(region, MKCoordinateRegion, AIRMap)
 
 
 #pragma mark exported MapView methods
+
+RCT_EXPORT_METHOD(cacheTileId:(nonnull NSString *)tileId)
+{
+    NSArray *tileParts = [tileId componentsSeparatedByString:@"_"];
+    
+    MKTileOverlayPath path;
+    path.x = [tileParts[0] integerValue];
+    path.y = [tileParts[1] integerValue];
+    path.z = [tileParts[2] integerValue];
+    
+    [airMapUrlTile.tileOverlay loadTileAtPath: path result: nil];
+}
+
+RCT_EXPORT_METHOD(cacheTileId:(nonnull NSNumber *)reactTag
+                  tileId:(nonnull NSString *)tileId
+                  callback:(RCTResponseSenderBlock)callback)
+{
+    NSArray *tileParts = [tileId componentsSeparatedByString:@"_"];
+    
+    MKTileOverlayPath path;
+    path.z = [tileParts[0] integerValue];
+    path.y = [tileParts[1] integerValue];
+    path.x = [tileParts[2] integerValue];
+    
+    [airMapUrlTile.tileOverlay loadTileAtPath: path result: ^(NSData *data, NSError *error) {
+        if (error) {
+            callback(@[error]);
+        } else {
+            callback(@[[NSNull null]]);
+        }
+    }];
+}
+
 
 RCT_EXPORT_METHOD(animateToRegion:(nonnull NSNumber *)reactTag
         withRegion:(MKCoordinateRegion)region

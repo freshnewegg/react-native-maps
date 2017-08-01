@@ -77,7 +77,7 @@
 
         _pinView.draggable = self.draggable;
         _pinView.layer.zPosition = self.zIndex;
-				_pinView.selected = YES;
+		_pinView.selected = YES;
 
         // TODO(lmr): Looks like this API was introduces in iOS 8. We may want to handle differently for earlier
         // versions. Right now it's just leaving it with the default color. People needing the colors are free to
@@ -93,6 +93,7 @@
         // In either case, we want to return the AIRMapMarker since it is both an MKAnnotation and an
         // MKAnnotationView all at the same time.
         self.image = [UIImage imageNamed:self.imageSrc];
+        self.selected = YES;
         self.layer.zPosition = self.zIndex;
         return self;
     }
